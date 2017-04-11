@@ -1,0 +1,13 @@
+name: MinecraftPointLocator
+version: 1.0
+author: BinaryOverload
+main: es.esy.williamoldham.mcpointlocator.Main
+commands:
+  setpoint:
+    description: Sets a point
+  delpoint:
+    description: Deletes a point
+  point:
+    description: Selects or lists a point
+  locate:
+    description: Teleports you to a GE to MC point
