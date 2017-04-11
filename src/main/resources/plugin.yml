@@ -1,5 +1,5 @@
 name: MinecraftPointLocator
-version: 1.0
+version: 1.0.1
 author: BinaryOverload
 main: es.esy.williamoldham.mcpointlocator.Main
 commands:
