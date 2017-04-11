@@ -1,0 +1,13 @@
+language: java
+jdk:
+- oraclejdk8
+script:
+- mvn clean
+- mvn package
+deploy:
+  provider: releases
+  api_key: "00f038bed59934bfa006eb1860b6f14d5e9b6bf3"
+  file: "FILE TO UPLOAD"
+  skip_cleanup: true
+  on:
+    tags: true
