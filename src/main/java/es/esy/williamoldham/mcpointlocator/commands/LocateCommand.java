@@ -8,10 +8,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import es.esy.williamoldham.mcpointlocator.Main;
+import es.esy.williamoldham.mcpointlocator.MCPointLocator;
 import es.esy.williamoldham.mcpointlocator.Point;
 
-import static es.esy.williamoldham.mcpointlocator.Main.color;
+import static es.esy.williamoldham.mcpointlocator.MCPointLocator.color;
 
 public class LocateCommand implements CommandExecutor {
 
@@ -45,7 +45,7 @@ public class LocateCommand implements CommandExecutor {
 			return true;
 		}
 		
-		Main main = Main.getInstance();
+		MCPointLocator main = MCPointLocator.getInstance();
 		
 		boolean hasPoint = main.hasSelectedPoint(player);
 		
