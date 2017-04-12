@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import es.esy.williamoldham.binarycore.BinaryPlugin;
+import es.esy.williamoldham.binarycore.PluginLoader;
+import es.esy.williamoldham.mcpointlocator.commands.*;
 import org.apache.commons.io.FilenameUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -19,164 +22,176 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
-import es.esy.williamoldham.mcpointlocator.commands.DelPointCommand;
-import es.esy.williamoldham.mcpointlocator.commands.LocateCommand;
-import es.esy.williamoldham.mcpointlocator.commands.PointCommand;
-import es.esy.williamoldham.mcpointlocator.commands.SetPointCommand;
+public class MCPointLocator extends BinaryPlugin {
 
-public class MCPointLocator extends JavaPlugin {
+    private List<Point> points;
+    private Map<Player, Point> selected;
 
-	private List<Point> points = new ArrayList<>();
-	private Map<Player, Point> selected = new HashMap<Player, Point>();
+    @Override
+    public void init() {
+        points = new ArrayList<>();
+        selected = new HashMap<Player, Point>();
+        PluginLoader.getInstance().registerPlugin(this, "1.5.1");
+    }
 
-	@Override
-	public void onEnable() {
-		try {
-			loadPoints();
-		} catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		getCommand("point").setExecutor(new PointCommand());
-		getCommand("setpoint").setExecutor(new SetPointCommand());
-		getCommand("delpoint").setExecutor(new DelPointCommand());
-		getCommand("locate").setExecutor(new LocateCommand());
+    @Override
+    public void load() {
+        try {
+            loadPoints();
+        } catch (JsonSyntaxException | JsonIOException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
-	}
+    @Override
+    public void postload() {
+    }
 
-	@Override
-	public void onDisable() {
+    @Override
+    public void preload() {
+    }
 
-		try {
-			savePoints();
-		} catch (JsonIOException | IOException e) {
-			e.printStackTrace();
-		}
+    @Override
+    public void register() {
+        getCommand("point").setExecutor(new PointCommand());
+        getCommand("point").setTabCompleter(new PointTabCompleter());
+        getCommand("setpoint").setExecutor(new SetPointCommand());
+        getCommand("delpoint").setExecutor(new DelPointCommand());
+        getCommand("locate").setExecutor(new LocateCommand());
+    }
 
-	}
+    @Override
+    public void save() {
+        try {
+            savePoints();
+        } catch (JsonIOException | IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public void loadPoints() throws JsonSyntaxException, JsonIOException, FileNotFoundException {
+    @Override
+    public void schedule() {
+    }
 
-		getDataFolder().mkdir();
 
-		for (File file : getDataFolder().listFiles()) {
-			if (file.isFile() && FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("json")) {
-				Gson gson = new Gson();
-				Point point = gson.fromJson(new FileReader(file), Point.class);
-				points.add(point);
-			}
-		}
-	}
+    public void loadPoints() throws JsonSyntaxException, JsonIOException, FileNotFoundException {
 
-	public void savePoints() throws JsonIOException, IOException {
+        getDataFolder().mkdir();
 
-		getDataFolder().mkdir();
+        for (File file : getDataFolder().listFiles()) {
+            if (file.isFile() && FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("json")) {
+                Gson gson = new Gson();
+                Point point = gson.fromJson(new FileReader(file), Point.class);
+                points.add(point);
+            }
+        }
+    }
 
-		for (Point point : points) {
-			File file = new File(getDataFolder(), point.getName() + ".json");
-			FileWriter writer = new FileWriter(file);
-			Gson gson = new Gson();
-			String json = gson.toJson(point);
-			writer.write(json);
-			writer.close();
-		}
-	}
+    public void savePoints() throws JsonIOException, IOException {
 
-	public boolean nameExists(String name) {
-		for (Point point : points) {
-			if (point.getName().equalsIgnoreCase(name)) {
-				return true;
-			}
-		}
-		return false;
-	}
+        getDataFolder().mkdir();
 
-	public Point geToMC(double geAngle, double geLength, Point point) {
-		double angle = geAngle;
+        for (Point point : points) {
+            File file = new File(getDataFolder(), point.getName() + ".json");
+            FileWriter writer = new FileWriter(file);
+            Gson gson = new Gson();
+            String json = gson.toJson(point);
+            writer.write(json);
+            writer.close();
+        }
+    }
 
-		double radAngle = angle / 180.0D * 3.141592653589793D;
-		double hypoLength = geLength;
+    public boolean nameExists(String name) {
+        for (Point point : points) {
+            if (point.getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-		double preRoundX = hypoLength * Math.sin(radAngle);
-		double preRoundZ = hypoLength * Math.cos(radAngle);
+    public Point geToMC(double geAngle, double geLength, Point point) {
+        double angle = geAngle;
 
-		double postRoundX = Math.round(preRoundX);
-		double postRoundZ = Math.round(preRoundZ);
+        double radAngle = angle / 180.0D * 3.141592653589793D;
+        double hypoLength = geLength;
 
-		int changeX = (int) postRoundX;
-		int changeZ = (int) postRoundZ;
+        double preRoundX = hypoLength * Math.sin(radAngle);
+        double preRoundZ = hypoLength * Math.cos(radAngle);
 
-		int xVal = (point.getX() + changeX);
-		int zVal = (point.getZ() - changeZ);
+        double postRoundX = Math.round(preRoundX);
+        double postRoundZ = Math.round(preRoundZ);
 
-		return new Point("", xVal, zVal);
-	}
+        int changeX = (int) postRoundX;
+        int changeZ = (int) postRoundZ;
 
-	public static MCPointLocator getInstance() {
-		return MCPointLocator.getPlugin(MCPointLocator.class);
-	}
+        int xVal = (point.getX() + changeX);
+        int zVal = (point.getZ() - changeZ);
 
-	public void addPlayerPoint(Player player, Point p) {
-		if (hasSelectedPoint(player)) {
-			points.remove(p);
-			points.add(p);
-		}
-		selected.put(player, p);
-	}
+        return new Point("", xVal, zVal);
+    }
 
-	public void removePlayerPoint(Player player) {
-		selected.remove(player);
-	}
+    public static MCPointLocator getInstance() {
+        return MCPointLocator.getPlugin(MCPointLocator.class);
+    }
 
-	public boolean hasSelectedPoint(Player player) {
-		return selected.containsKey(player);
-	}
+    public void addPlayerPoint(Player player, Point p) {
+        if (hasSelectedPoint(player)) {
+            points.remove(p);
+            points.add(p);
+        }
+        selected.put(player, p);
+    }
 
-	public Point getSelectedPoint(Player player) {
-		if (hasSelectedPoint(player)) {
-			return selected.get(player);
-		} else {
-			return null;
-		}
-	}
+    public void removePlayerPoint(Player player) {
+        selected.remove(player);
+    }
 
-	public void addPoint(Point point) {
-		if (!points.contains(point)) {
-			points.add(point);
-		}
-	}
+    public boolean hasSelectedPoint(Player player) {
+        return selected.containsKey(player);
+    }
 
-	public void removePoint(Point point) {
-		points.remove(point);
-	}
+    public Point getSelectedPoint(Player player) {
+        if (hasSelectedPoint(player)) {
+            return selected.get(player);
+        } else {
+            return null;
+        }
+    }
 
-	public boolean pointExists(String name) {
+    public void addPoint(Point point) {
+        if (!points.contains(point)) {
+            points.add(point);
+        }
+    }
 
-		for (Point point : points) {
-			if (point.getName().equalsIgnoreCase(name)) {
-				return true;
-			}
-		}
+    public void removePoint(Point point) {
+        points.remove(point);
+    }
 
-		return false;
-	}
+    public boolean pointExists(String name) {
 
-	public List<Point> getPoints() {
-		return points;
-	}
+        for (Point point : points) {
+            if (point.getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
 
-	public Point getPoint(String name) {
+        return false;
+    }
 
-		for (Point point : points) {
-			if (point.getName().equalsIgnoreCase(name)) {
-				return point;
-			}
-		}
+    public List<Point> getPoints() {
+        return points;
+    }
 
-		return null;
-	}
+    public Point getPoint(String name) {
 
-	public static String color(String color){
-		return ChatColor.translateAlternateColorCodes('&', color);
-	}
+        for (Point point : points) {
+            if (point.getName().equalsIgnoreCase(name)) {
+                return point;
+            }
+        }
 
+        return null;
+    }
 }
