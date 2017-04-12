@@ -31,7 +31,7 @@ public class MCPointLocator extends BinaryPlugin {
     public void init() {
         points = new ArrayList<>();
         selected = new HashMap<Player, Point>();
-        PluginLoader.getInstance().registerPlugin(this, "1.6.0");
+        PluginLoader.getInstance().registerPlugin(this, "2.0.0");
     }
 
     @Override
