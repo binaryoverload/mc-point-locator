@@ -1,19 +1,16 @@
 package es.esy.williamoldham.mcpointlocator.commands;
 
-import java.io.IOException;
-
+import com.google.gson.JsonIOException;
+import es.esy.williamoldham.binarycore.StringUtils;
 import es.esy.williamoldham.mcpointlocator.MCPointLocator;
+import es.esy.williamoldham.mcpointlocator.Point;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.google.gson.JsonIOException;
-
-import es.esy.williamoldham.mcpointlocator.Point;
-
-import static es.esy.williamoldham.mcpointlocator.MCPointLocator.color;
+import java.io.IOException;
 
 public class SetPointCommand implements CommandExecutor {
 
@@ -28,8 +25,8 @@ public class SetPointCommand implements CommandExecutor {
 
 		if (args.length == 1) {
 			if (!(sender instanceof Player)) {
-				sender.sendMessage(color("&cYou need to be a player to use these args!"));
-				sender.sendMessage(color("&cConsole Usage - /setpoint <name> <x> <z>!"));
+				sender.sendMessage(StringUtils.colour("&cYou need to be a player to use these args!"));
+				sender.sendMessage(StringUtils.colour("&cConsole Usage - /setpoint <name> <x> <z>!"));
 			}
 
 			Player player = (Player) sender;
@@ -43,7 +40,7 @@ public class SetPointCommand implements CommandExecutor {
 			Point point = new Point(name, x, z);
 
 			if (main.pointExists(name)) {
-				player.sendMessage(color("&cPoint &4" + name + "&c already exists!"));
+				player.sendMessage(StringUtils.colour("&cPoint &4" + name + "&c already exists!"));
 				return true;
 			} else {
 				main.addPoint(point);
@@ -55,7 +52,7 @@ public class SetPointCommand implements CommandExecutor {
 				e.printStackTrace();
 			}
 
-			player.sendMessage(color("&aPoint &2" + name + "&a was created"));
+			player.sendMessage(StringUtils.colour("&aPoint &2" + name + "&a was created"));
 
 			try {
 				main.savePoints();
@@ -72,7 +69,7 @@ public class SetPointCommand implements CommandExecutor {
 			int z;
 
 			if (main.nameExists(args[0])) {
-				sender.sendMessage(color("&cPoint already exists!"));
+				sender.sendMessage(StringUtils.colour("&cPoint already exists!"));
 				return true;
 			} else {
 				name = args[0];
@@ -81,14 +78,14 @@ public class SetPointCommand implements CommandExecutor {
 			try {
 				x = Integer.parseInt(args[1]);
 			} catch (NumberFormatException e) {
-				sender.sendMessage(color("&cX must be an integer!"));
+				sender.sendMessage(StringUtils.colour("&cX must be an integer!"));
 				return true;
 			}
 
 			try {
 				z = Integer.parseInt(args[2]);
 			} catch (NumberFormatException e) {
-				sender.sendMessage(color("&cZ must be an integer!"));
+				sender.sendMessage(StringUtils.colour("&cZ must be an integer!"));
 				return true;
 			}
 
@@ -102,13 +99,13 @@ public class SetPointCommand implements CommandExecutor {
 				e.printStackTrace();
 			}
 
-			sender.sendMessage(color("&aPoint &2" + name + "&a was created"));
+			sender.sendMessage(StringUtils.colour("&aPoint &2" + name + "&a was created"));
 
 		} else {
 
-			sender.sendMessage(color("&4Usage:"));
-			sender.sendMessage(color("&c/setpoint <name> &2*Players only*"));
-			sender.sendMessage(color("&c/setpoint <name> <x> <z>"));
+			sender.sendMessage(StringUtils.colour("&4Usage:"));
+			sender.sendMessage(StringUtils.colour("&c/setpoint <name> &2*Players only*"));
+			sender.sendMessage(StringUtils.colour("&c/setpoint <name> <x> <z>"));
 			return true;
 
 		}

@@ -1,5 +1,8 @@
 package es.esy.williamoldham.mcpointlocator.commands;
 
+import es.esy.williamoldham.binarycore.StringUtils;
+import es.esy.williamoldham.mcpointlocator.MCPointLocator;
+import es.esy.williamoldham.mcpointlocator.Point;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -8,24 +11,19 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import es.esy.williamoldham.mcpointlocator.MCPointLocator;
-import es.esy.williamoldham.mcpointlocator.Point;
-
-import static es.esy.williamoldham.mcpointlocator.MCPointLocator.color;
-
 public class LocateCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		
 		if(!(sender instanceof Player)){
-			sender.sendMessage(color("&cThis command is for players only!"));
+			sender.sendMessage(StringUtils.colour("&cThis command is for players only!"));
 		}
 		
 		if(args.length != 2 && args.length != 3){
-			sender.sendMessage(color("&cWrong Command Usage!"));
-			sender.sendMessage(color("&4Usage:"));
-			sender.sendMessage(color("&c/locate <geLength> <geHeading> [height] &2*Players only*"));
+			sender.sendMessage(StringUtils.colour("&cWrong Command Usage!"));
+			sender.sendMessage(StringUtils.colour("&4Usage:"));
+			sender.sendMessage(StringUtils.colour("&c/locate <geLength> <geHeading> [height] &2*Players only*"));
 			return true;
 		}
 
@@ -41,9 +39,9 @@ public class LocateCommand implements CommandExecutor {
 			}
 		} catch (NumberFormatException e){
 			if(args.length != 3) {
-				sender.sendMessage(color("&cBoth the length and the heading need to be valid numbers!"));
+				sender.sendMessage(StringUtils.colour("&cBoth the length and the heading need to be valid numbers!"));
 			} else {
-				sender.sendMessage(color("&cBoth the length, the heading and the height need to be valid numbers!"));
+				sender.sendMessage(StringUtils.colour("&cBoth the length, the heading and the height need to be valid numbers!"));
 			}
 		}
 
@@ -77,11 +75,11 @@ public class LocateCommand implements CommandExecutor {
 			newLoc.getBlock().setType(Material.WOOL);
 			
 			player.teleport(newLoc.add(0, 1, 0));
-			sender.sendMessage(color("&aYou have been teleported to the new point!"));
+			sender.sendMessage(StringUtils.colour("&aYou have been teleported to the new point!"));
 			
 			
 		} else {
-			sender.sendMessage(color("&cYou need to have a point selected!"));
+			sender.sendMessage(StringUtils.colour("&cYou need to have a point selected!"));
 		}
 		
 		return true;

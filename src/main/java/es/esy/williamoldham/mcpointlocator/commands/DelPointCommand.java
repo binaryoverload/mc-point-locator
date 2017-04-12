@@ -1,15 +1,13 @@
 package es.esy.williamoldham.mcpointlocator.commands;
 
-import java.io.File;
-
+import es.esy.williamoldham.binarycore.StringUtils;
+import es.esy.williamoldham.mcpointlocator.MCPointLocator;
+import es.esy.williamoldham.mcpointlocator.Point;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import es.esy.williamoldham.mcpointlocator.MCPointLocator;
-import es.esy.williamoldham.mcpointlocator.Point;
-
-import static es.esy.williamoldham.mcpointlocator.MCPointLocator.color;
+import java.io.File;
 
 public class DelPointCommand implements CommandExecutor{
 
@@ -33,19 +31,19 @@ public class DelPointCommand implements CommandExecutor{
 				
 				main.removePoint(point);
 				
-				sender.sendMessage(color("&aPoint &2" + potentialPoint + "&a was deleted!"));
+				sender.sendMessage(StringUtils.colour("&aPoint &2" + potentialPoint + "&a was deleted!"));
 				
 			} else {
 				
-				sender.sendMessage(color("&cPoint &4" + potentialPoint + "&c does not exist!"));
+				sender.sendMessage(StringUtils.colour("&cPoint &4" + potentialPoint + "&c does not exist!"));
 				
 			}
 			
 			
 			return true;
 		} else {
-			sender.sendMessage(color("&4Usage:"));
-			sender.sendMessage(color("&c/delpoint <name>"));
+			sender.sendMessage(StringUtils.colour("&4Usage:"));
+			sender.sendMessage(StringUtils.colour("&c/delpoint <name>"));
 			return true;
 		}
 	}
