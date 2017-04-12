@@ -6,17 +6,17 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import es.esy.williamoldham.mcpointlocator.Main;
+import es.esy.williamoldham.mcpointlocator.MCPointLocator;
 import es.esy.williamoldham.mcpointlocator.Point;
 
-import static es.esy.williamoldham.mcpointlocator.Main.color;
+import static es.esy.williamoldham.mcpointlocator.MCPointLocator.color;
 
 public class DelPointCommand implements CommandExecutor{
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 	
-		Main main = Main.getInstance();
+		MCPointLocator main = MCPointLocator.getInstance();
 		
 		if(args.length == 1){
 			

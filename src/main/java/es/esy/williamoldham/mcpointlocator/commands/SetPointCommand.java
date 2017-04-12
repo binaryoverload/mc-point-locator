@@ -2,6 +2,7 @@ package es.esy.williamoldham.mcpointlocator.commands;
 
 import java.io.IOException;
 
+import es.esy.williamoldham.mcpointlocator.MCPointLocator;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,17 +11,16 @@ import org.bukkit.entity.Player;
 
 import com.google.gson.JsonIOException;
 
-import es.esy.williamoldham.mcpointlocator.Main;
 import es.esy.williamoldham.mcpointlocator.Point;
 
-import static es.esy.williamoldham.mcpointlocator.Main.color;
+import static es.esy.williamoldham.mcpointlocator.MCPointLocator.color;
 
 public class SetPointCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-		Main main = Main.getInstance();
+		MCPointLocator main = MCPointLocator.getInstance();
 
 		if (!sender.isOp()) {
 			return true;

@@ -24,7 +24,7 @@ import es.esy.williamoldham.mcpointlocator.commands.LocateCommand;
 import es.esy.williamoldham.mcpointlocator.commands.PointCommand;
 import es.esy.williamoldham.mcpointlocator.commands.SetPointCommand;
 
-public class Main extends JavaPlugin {
+public class MCPointLocator extends JavaPlugin {
 
 	private List<Point> points = new ArrayList<>();
 	private Map<Player, Point> selected = new HashMap<Player, Point>();
@@ -111,8 +111,8 @@ public class Main extends JavaPlugin {
 		return new Point("", xVal, zVal);
 	}
 
-	public static Main getInstance() {
-		return Main.getPlugin(Main.class);
+	public static MCPointLocator getInstance() {
+		return MCPointLocator.getPlugin(MCPointLocator.class);
 	}
 
 	public void addPlayerPoint(Player player, Point p) {
