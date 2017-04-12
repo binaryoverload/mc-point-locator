@@ -1,7 +1,7 @@
 name: MinecraftPointLocator
-version: 1.0.3
+version: 1.0.4
 author: BinaryOverload
-main: es.esy.williamoldham.mcpointlocator.Main
+main: es.esy.williamoldham.mcpointlocator.MCPointLocatorintLocator
 commands:
   setpoint:
     description: Sets a point

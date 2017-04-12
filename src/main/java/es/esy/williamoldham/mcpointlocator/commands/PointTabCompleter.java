@@ -7,12 +7,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import es.esy.williamoldham.mcpointlocator.Main;
+import es.esy.williamoldham.mcpointlocator.MCPointLocator;
 import es.esy.williamoldham.mcpointlocator.Point;
 
 public class PointTabCompleter implements TabCompleter {
 
-	Main main = Main.getInstance();
+	MCPointLocator main = MCPointLocator.getInstance();
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
