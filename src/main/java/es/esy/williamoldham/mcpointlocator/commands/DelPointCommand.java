@@ -1,6 +1,6 @@
 package es.esy.williamoldham.mcpointlocator.commands;
 
-import es.esy.williamoldham.binarycore.StringUtils;
+import es.esy.williamoldham.binarycore.util.StringUtils;
 import es.esy.williamoldham.mcpointlocator.MCPointLocator;
 import es.esy.williamoldham.mcpointlocator.Point;
 import org.bukkit.command.Command;
